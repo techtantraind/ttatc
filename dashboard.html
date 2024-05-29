@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>User Dashboard</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <style>
+    /* style.css */
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      justify-content: flex-start;
+      align-items: center;
+    }
+
+    .container {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+      width: 90%;
+      max-width: 1000px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+      margin-top: 20px; /* Add some top margin */
+      height: fit-content;
+    }
+
+    .content {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+    }
+
+    .left-section,
+    .right-section {
+      width: 100%;
+      padding: 10px;
+      height: fit-content;
+    }
+
+    .left-section {
+      text-align: left;
+    }
+
+    .right-section {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    h1 {
+      color: #333;
+      font-size: 24px;
+      margin-bottom: 20px;
+      position: relative;
+      z-index: 1;
+      text-align: center;
+    }
+
+    h2 {
+      color: #555;
+      margin-top: 20px;
+      position: relative;
+      z-index: 1;
+      width: 530px;
+    }
+
+    p {
+      font-size: 16px;
+      color: #333;
+      position: relative;
+      z-index: 1;
+    }
+
+    .user-data {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin-top: 20px;
+      position: relative;
+      z-index: 1;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+    
+    .user-data-container {
+      max-height: 427px; /* Adjust the desired height */
+      overflow-y: auto; /* Enable vertical scrolling */
+      position: relative;
+      scrollbar-width: thin; /* For Firefox */
+      scrollbar-color: #888 #f1f1f1; /* For Firefox */
+    }
+
+    /* Chrome, Edge, Safari */
+    .user-data-container::-webkit-scrollbar {
+      width: 8px; /* Width of the scrollbar */
+    }
+
+    .user-data-container::-webkit-scrollbar-track {
+      background-color: #f1f1f1; /* Color of the track (area behind the scrollbar) */
+    }
+
+    .user-data-container::-webkit-scrollbar-thumb {
+      background-color: #888; /* Color of the scrollbar thumb */
+      border-radius: 4px; /* Rounded corners of the scrollbar thumb */
+    }
+
+    .user-data-container::-webkit-scrollbar-thumb:hover {
+      background-color: #555; /* Color of the scrollbar thumb on hover */
+    }
+
+    .user-data-item {
+      background-color: #878787;
+      padding: 10px;
+      border-radius: 4px;
+      border: 1px solid #ddd;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: monospace;
+      color: white;
+    }
+
+    .user-data-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .user-data-item strong {
+      color: #333;
+    }
+
+    a {
+      display: inline-block;
+      margin-top: 30px;
+      text-decoration: none;
+      color: #007bff;
+      font-weight: bold;
+      padding: 10px 20px;
+      border-radius: 4px;
+      background-color: transparent;
+      border: 2px solid #007bff;
+      transition: all 0.3s ease;
+      position: relative;
+      z-index: 1;
+    }
+
+    a:hover {
+      color: #fff;
+      background-color: #007bff;
+    }
+
+    .background-animation {
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(45deg, #ff9a9e, #fad0c4, #fad0c4, #a18cd1, #fbc2eb);
+      animation: rotate 20s linear infinite;
+      z-index: 0;
+    }
+
+    .profile {
+      margin-top: -120px;
+      padding: 30px;
+      border-radius: 4px;
+      background-color: #fff;
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    }
+    
+    .scroll-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 50px;
+      line-height: 50px;
+      text-align: center;
+      color: white;
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
+      pointer-events: none;
+      z-index: 1;
+      opacity: 1;
+      transition: opacity 0.3s ease;
+    }
+
+    .user-data-container:hover .scroll-overlay {
+      opacity: 0;
+    }
+    
+    @keyframes rotate {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    @media (min-width: 768px) {
+      .content {
+        flex-direction: row;
+      }
+      .left-section,
+      .right-section {
+        width: 48%;
+        height: fit-content;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="background-animation"></div>
+    
+    <div class="content">
+      <div class="left-section">
+        <h2>Profile: <div class="user-id">{{ user_id }}</div></h2>
+
+        {% if user_data %}
+          <h2>Personal Information</h2>
+          <div class="user-data-container">
+            <div class="user-data">
+              <div class="user-data-item"><strong>Country:</strong> {{ user_data.personal_info.country }}</div>
+              <div class="user-data-item"><strong>Gender:</strong> {{ user_data.personal_info.gender }}</div>
+              <div class="user-data-item"><strong>Age:</strong> {{ user_data.personal_info.age }}</div>
+              <div class="user-data-item"><strong>Sleep Time:</strong> {{ user_data.personal_info.sleep_time }}</div>
+              <div class="user-data-item"><strong>Wake Time:</strong> {{ user_data.personal_info.wake_time }}</div>
+              <div class="user-data-item"><strong>Weight:</strong> {{ user_data.personal_info.weight }}</div>
+              <div class="user-data-item"><strong>Height (Feet):</strong> {{ user_data.personal_info.height_feet }}</div>
+              <div class="user-data-item"><strong>Height (Inches):</strong> {{ user_data.personal_info.height_inches }}</div>
+            </div>
+          </div>
+
+          <h2>Lifestyle</h2>
+          <div class="user-data-container">
+            <div class="user-data">
+              <div class="user-data-item"><strong>Occupation:</strong> {{ user_data.lifestyle.occupation }}</div>
+              <div class="user-data-item"><strong>Specific Diet:</strong> {{ user_data.lifestyle.specific_diet }}</div>
+              <div class="user-data-item"><strong>Alcohol Consumption:</strong> {{ user_data.lifestyle.alcohol_consumption }}</div>
+              <div class="user-data-item"><strong>Smoker:</strong> {{ user_data.lifestyle.smoker }}</div>
+              <div class="user-data-item"><strong>Meal Times:</strong> {{ user_data.lifestyle.meal_times }}</div>
+              <div class="user-data-item"><strong>Food Allergies:</strong> {{ user_data.lifestyle.food_allergies }}</div>
+              <div class="user-data-item"><strong>Eat Out Frequency:</strong> {{ user_data.lifestyle.eat_out_frequency }}</div>
+              <div class="user-data-item"><strong>Exercise:</strong> {{ user_data.lifestyle.exercise }}</div>
+              <div class="user-data-item"><strong>Health Conditions:</strong> {{ user_data.lifestyle.health_conditions }}</div>
+              <div class="user-data-item"><strong>Dietary Goals:</strong> {{ user_data.lifestyle.dietary_goals }}</div>
+              <div class="user-data-item"><strong>Favorite Foods:</strong> {{ user_data.lifestyle.favorite_foods }}</div>
+              <div class="user-data-item"><strong>Disliked Foods:</strong> {{ user_data.lifestyle.disliked_foods }}</div>
+              <div class="user-data-item"><strong>Food Restrictions:</strong> {{ user_data.lifestyle.food_restrictions }}</div>
+              <div class="user-data-item"><strong>Daily Routine:</strong> {{ user_data.lifestyle.daily_routine }}</div>
+              <div class="user-data-item"><strong>Activity Level:</strong> {{ user_data.lifestyle.activity_level }}</div>
+              <div class="user-data-item"><strong>Travel Frequency:</strong> {{ user_data.lifestyle.travel_frequency }}</div>
+              <div class="user-data-item"><strong>Stressors/Triggers:</strong> {{ user_data.lifestyle.stressors_triggers }}</div>
+              <div class="user-data-item"><strong>Health Motivation:</strong> {{ user_data.lifestyle.health_motivation }}</div>
+              <div class="user-data-item"><strong>Negative Effects:</strong> {{ user_data.lifestyle.negative_effects }}</div>
+              <div class="user-data-item"><strong>Health Concerns:</strong> {{ user_data.lifestyle.health_concerns }}</div>
+              <div class="user-data-item"><strong>Social Eating Style:</strong> {{ user_data.lifestyle.social_eating_style }}</div>
+              <div class="user-data-item"><strong>Hydration Method:</strong> {{ user_data.lifestyle.hydration_method }}</div>
+              <div class="user-data-item"><strong>Meal Prep Method:</strong> {{ user_data.lifestyle.meal_prep_method }}</div>
+              <div class="user-data-item"><strong>Dietary Restrictions:</strong> {{ user_data.lifestyle.dietary_restrictions }}</div>
+            </div>
+          </div>
+
+          <h2>Health Metrics</h2>
+          <div class="user-data-container">
+            <div class="user-data">
+              <div class="user-data-item"><strong>BMI:</strong> {{ user_data.health_metrics.bmi }}</div>
+              <div class="user-data-item"><strong>BMI Category:</strong> {{ user_data.health_metrics.bmi_category }}</div>
+              <div class="user-data-item"><strong>Body Fat Percentage:</strong> {{ user_data.health_metrics.body_fat_percentage }}</div>
+              <div class="user-data-item"><strong>Body Fat Risk:</strong> {{ user_data.health_metrics.body_fat_risk }}</div>
+              <div class="user-data-item"><strong>Caloric Needs:</strong> {{ user_data.health_metrics.caloric_needs }}</div>
+              <div class="user-data-item"><strong>Goal Description:</strong> {{ user_data.health_metrics.goal_description }}</div>
+              <div class="user-data-item"><strong>Macros:</strong> {{ user_data.health_metrics.macros }}</div>
+            </div>
+          </div>
+        {% else %}
+          <p>No user data found.</p>
+        {% endif %}
+      </div>
+
+      <div class="right-section">
+        <a href="{{ url_for('index') }}">Back to Home</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

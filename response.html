@@ -1,0 +1,613 @@
+<!--response-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Response</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #00000065;
+            margin: 0;
+            padding: 0;
+            background-image: url('/static/bgup.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-blend-mode: overlay; /* This will make the background image barely visible */
+        }
+        .wrapper {
+            display: flex; /* Use flexbox for layout */
+            justify-content: space-between; /* Items spaced evenly */
+            max-width: 1200px; /* Adjust maximum width as needed */
+            margin: 20px auto; /* Center align and add margin */
+            padding: 20px;
+            backdrop-filter: blur(5px) brightness(70%);
+            background-color: #22222269;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        .classified-visuals {
+    width: 50%; /* Width of the profile section */
+    padding: 20px;
+    background-color: #22222200;
+    border-radius: 10px;
+    color: #ffffff;
+    overflow-y: auto; /* Add vertical scroll */
+    max-height: 70vh; /* Limit the maximum height */
+    
+}
+
+.classified-visuals h2 {
+    margin-bottom: 10px;
+}
+
+.classified-visuals ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.classified-visuals ul li {
+    margin-bottom: 5px;
+}
+
+        .container {
+            width: 65%; /* Width of the chat container */
+            background-color: #22222200;
+            border-radius: 10px;
+
+            padding: 20px;
+
+        }
+        h1 {
+            text-align: center;
+            color: #ffffff;
+        }
+        .chat-box {
+            margin-top: 20px;
+            max-height: 100vh; /* Limit chat box height */
+            overflow-y: auto; /* Enable vertical scroll */
+            height: 601px;
+            width: 561px;
+
+        }
+        .message {
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            white-space: pre-wrap;
+        }
+        .user-message {
+            background-color: #ff4f4f;
+            float: left;
+            color: #ffffff;
+        }
+        .ai-message, .system-message {
+            background-color: #4CAF50;
+            color: white;
+            float: right;
+            text-align: right;
+        }
+        .form-container {
+            text-align: center;
+            margin-top: 20px;
+            clear: both;
+        }
+        .form-container input[type=text] {
+            width: 70%;
+            padding: 10px;
+            margin-right: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            transition: border-color 0.3s;
+        }
+        .form-container input[type=text]:focus {
+            outline: none;
+            border-color: #4CAF50;
+        }
+        .form-container input[type=submit] {
+            padding: 10px 20px;
+            border-radius: 5px;
+            border: none;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .form-container input[type=submit]:hover {
+            background-color: #45a049;
+        }
+        .mini {
+            font-size: 10px;
+            color: #ffffff;
+        }
+        /* For WebKit based browsers like Chrome and Safari */
+::-webkit-scrollbar {
+    width: 5px;
+    display: none;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555555;
+    
+}
+.chat-box {
+    margin-top: 20px;
+    max-height: 70vh;
+    overflow-y: auto;
+    display: flex; /* Add flexbox */
+    flex-direction: column; /* Stack items vertically */
+    font-size: 20px;
+}
+.user-message {
+    background-color: #ff4f4f;
+    color: #ffffff;
+}
+
+.ai-message, .system-message {
+    background-color: #4CAF50;
+    color: white;
+    text-align: left; /* Align AI messages to the left */
+}
+.logo {
+    margin-bottom: 20px; /* Add some spacing between the logo and the content */
+}
+
+.logo img {
+    max-width: 100%; /* Ensure the logo doesn't exceed its container */
+    height: auto; /* Maintain aspect ratio */
+    margin-right: -121px;
+}
+
+table {
+            width: 100%;
+            border-collapse: collapse;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+            color: #333;
+        }
+        tr:hover {
+            background-color: #f5f5f54f;
+        }
+        td {
+            color: #666;
+        }
+        td:hover {
+            color: #e71616;
+            font-weight: bold;
+            transform: scale(1.05);
+        }
+        .user-id {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            background-color: #fff;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+        #clear-session-link {
+  color: #337ab7; /* blue */
+  text-decoration: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  background-color: #ffffff; /* white */
+  transition: all 0.3s ease;
+}
+
+#clear-session-link:hover {
+  color: #fff; /* white */
+  background-color: #337ab7; /* blue */
+  text-decoration: none;
+}
+.preset-buttons {
+    margin-top: 10px;
+}
+
+.preset-buttons button {
+    display: block;
+    width: 100%;
+    padding: 12px; /* Increased padding for better click area */
+    margin-bottom: 8px; /* Slightly increased spacing between buttons */
+    border: none; /* Removed border for a cleaner look */
+    border-radius: 8px; /* Rounded corners */
+    background-color: #3b6bb3; /* Green background color */
+    color: white; /* White text color */
+    cursor: pointer;
+    font-size: 16px; /* Slightly increased font size */
+    text-align: center;
+    transition: background-color 0.3s ease; /* Smooth hover effect */
+}
+
+.preset-buttons button:hover {
+    background-color: #45a049; /* Darker green on hover */
+}
+
+/* Optional: Add more specific styling for different button states (e.g., active, disabled) */
+
+        .mini {
+            font-size: 12px;
+            color: #777;
+        }
+</style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+</head>
+<body>
+    <div class="wrapper">
+        <div class="logo">
+            <!-- Insert your logo here -->
+            <img src="{{ url_for('static', filename='logos/Blogo.png') }}" alt="Logo">
+        </div>
+        
+            
+        </form>
+        
+        <div class="classified-visuals">
+            
+            <h2>Profile: <div class="user-id">{{ user_id }}</div></h2>
+
+   <!-- Personal Information Table -->
+   <table>
+    <caption>Personal Information</caption>
+    <tr>
+        <th>Field</th>
+        <th>Value</th>
+    </tr>
+    <tr>
+        <td>Country</td>
+        <td>{{ user_data.personal_info.get('country', 'N/A') }}</td>
+    </tr>
+    <tr>
+        <td>Gender</td>
+        <td>{{ user_data.personal_info.get('gender', 'N/A') }}</td>
+    </tr>
+    <tr>
+        <td>Age</td>
+        <td>{{ user_data.personal_info.get('age', 'N/A') }}</td>
+    </tr>
+    <tr>
+        <td>Sleep Time</td>
+        <td>{{ user_data.personal_info.get('sleep_time', 'N/A') }}</td>
+    </tr>
+    <tr>
+        <td>Wake Time</td>
+        <td>{{ user_data.personal_info.get('wake_time', 'N/A') }}</td>
+    </tr>
+    <tr>
+        <td>Weight (kg)</td>
+        <td>{{ user_data.personal_info.get('weight', 'N/A') }}</td>
+    </tr>
+    <tr>
+        <td>Height (feet)</td>
+        <td>{{ user_data.personal_info.get('height_feet', 'N/A') }}</td>
+    </tr>
+    <tr>
+        <td>Height (inches)</td>
+        <td>{{ user_data.personal_info.get('height_inches', 'N/A') }}</td>
+    </tr>
+</table>
+
+<!-- Lifestyle Information Table -->
+<table>
+    <caption>Lifestyle Information</caption>
+    <tr>
+        <th>Field</th>
+        <th>Value</th>
+    </tr>
+    <tr>
+        <td>Occupation</td>
+        <td>{{ user_data.lifestyle.get('occupation', 'N/A') }}</td>
+    </tr>
+    <tr>
+        <td>Specific Diet</td>
+        <td>{{ user_data.lifestyle.get('specific_diet', 'N/A') }}</td>
+    </tr>
+    <tr>
+        <td>Alcohol Consumption</td>
+        <td>{{ user_data.lifestyle.get('alcohol_consumption', 'N/A') }}</td>
+    </tr>
+    <tr>
+        <td>Smoker</td>
+        <td>{{ user_data.lifestyle.get('smoker', 'N/A') }}</td>
+    </tr>
+    <tr>
+        <td>Meal Times</td>
+        <td>{{ user_data.lifestyle.get('meal_times', 'N/A') }}</td>
+    </tr>
+    <tr>
+        <td>Food Allergies</td>
+        <td>{{ user_data.lifestyle.get('food_allergies', 'N/A') }}</td>
+    </tr>
+    <tr>
+        <td>Eat Out Frequency</td>
+        <td>{{ user_data.lifestyle.get('eat_out_frequency', 'N/A') }}</td>
+    </tr>
+    <tr>
+        <td>Exercise</td>
+        <td>{{ user_data.lifestyle.get('exercise', 'N/A') }}</td>
+    </tr>
+    <tr>
+        <td>Health Conditions</td>
+        <td>{{ user_data.lifestyle.get('health_conditions', 'N/A') }}</td>
+    </tr>
+    <tr>
+        <td>Dietary Goals</td>
+        <td>{{ user_data.lifestyle.get('dietary_goals', 'N/A') }}</td>
+    </tr>
+    <tr>
+        <td>Favorite Foods</td>
+        <td>{{ user_data.lifestyle.get('favorite_foods', 'N/A') }}</td>
+    </tr>
+    <tr>
+        <td>Eating Pace</td>
+        <td>{{ user_data.lifestyle.get('eating_pace', 'N/A') }}</td>
+    </tr>
+    <tr>
+        <td>Cooking Frequency</td>
+        <td>{{ user_data.lifestyle.get('cooking_frequency', 'N/A') }}</td>
+    </tr>
+    <tr>
+        <td>Nutrient Targets</td>
+        <td>{{ user_data.lifestyle.get('nutrient_targets', 'N/A') }}</td>
+    </tr>
+    <tr>
+        <td>Daily Routine</td>
+        <td>{{ user_data.lifestyle.get('daily_routine', 'N/A') }}</td>
+    </tr>
+    <tr>
+        <td>Travel Frequency</td>
+        <td>{{ user_data.lifestyle.get('travel_frequency', 'N/A') }}</td>
+    </tr>
+    <tr>
+        <td>Stressors/Triggers</td>
+        <td>{{ user_data.lifestyle.get('stressors_triggers', 'N/A') }}</td>
+    </tr>
+    <tr>
+        <td>Health Motivation</td>
+        <td>{{ user_data.lifestyle.get('health_motivation', 'N/A') }}</td>
+    </tr>
+    <tr>
+        <td>Negative Effects</td>
+        <td>{{ user_data.lifestyle.get('negative_effects', 'N/A') }}</td>
+    </tr>
+    <tr>
+        <td>Health Concerns</td>
+        <td>{{ user_data.lifestyle.get('health_concerns', 'N/A') }}</td>
+    </tr>
+    <tr>
+        <td>Social Eating Style</td>
+        <td>{{ user_data.lifestyle.get('social_eating_style', 'N/A') }}</td>
+    </tr>
+    <tr>
+        <td>Hydration Method</td>
+        <td>{{ user_data.lifestyle.get('hydration_method', 'N/A') }}</td>
+    </tr>
+    <tr>
+        <td>Meal Prep Method</td>
+        <td>{{ user_data.lifestyle.get('meal_prep_method', 'N/A') }}</td>
+    </tr>
+    <tr>
+        <td>Dietary Restrictions</td>
+        <td>{{ user_data.lifestyle.get('dietary_restrictions', 'N/A') }}</td>
+    </tr>
+</table>
+
+<!-- Health Metrics Table -->
+<table>
+    <caption>Health Metrics</caption>
+    <tr>
+        <th>Field</th>
+        <th>Value</th>
+    </tr>
+    <tr>
+        <td>BMI</td>
+        <td>{{ user_data.health_metrics.get('bmi', 'N/A') }}</td>
+    </tr>
+    <tr>
+        <td>Body Fat Percentage</td>
+        <td>{{ user_data.health_metrics.get('body_fat_percentage', 'N/A') }}</td>
+    </tr>
+    <tr>
+        <td>Caloric Needs</td>
+        <td>{{ user_data.health_metrics.get('caloric_needs', 'N/A') }}</td>
+    </tr>
+</table>   
+ <table>
+    <caption>Macronutrient_needs</caption>
+    <tr>
+        <th>Macronutrient</th>
+        <th>Grams</th>
+    </tr>
+    <tr>
+        <td>Carbohydrates (g)</td>
+        <td>{{ user_data.health_metrics.macros.get('carbs', 'N/A') }}</td>
+    </tr>
+    <tr>
+        <td>Protein (g)</td>
+        <td>{{ user_data.health_metrics.macros.get('protein', 'N/A') }}</td>
+    </tr>
+    <tr>
+        <td>Fat (g)</td>
+        <td>{{ user_data.health_metrics.macros.get('fat', 'N/A') }}</td>
+    </tr>
+
+            </table>
+            
+            <td><a href="/clear_session" id="clear-session-link">Clear Session</a></td>
+        </div>
+
+        <div class="container">
+            <h1>Chat Response</h1>
+            <div class="chat-box" id="chat-box">
+                {% for entry in chat_history %}
+                  {% if entry.role == 'user' %}
+                    {% if not loop.first %}
+                      <div class="user-message message">{{ entry.content }}</div>
+                    {% endif %}
+                  {% elif entry.role == 'assistant' %}
+                  <div class="ai-message message">
+                    {% autoescape off %}
+                        {% set bold_words = entry.content|replace("**", "<strong>")|replace("*", "</strong>") %}
+                        {{ bold_words|safe }}
+                    {% endautoescape %}
+                </div>
+                
+                  {% elif entry.role == 'system' %}
+                    <div class="system-message message">{{ entry.content }}</div>
+                  {% endif %}
+                {% endfor %}
+              </div>
+
+
+            <!-- Form for user input -->
+            <div class="form-container">
+                <form id="chat-form">
+                    <div class="preset-buttons" id="preset-buttons">
+                        <!-- Buttons will be dynamically inserted here -->
+                    </div>
+                    <input type="text" id="user_input" name="user_input" placeholder="Type your message..." required>
+                    <input type="submit" value="Send">
+                    <p class="mini">I'm a dietitian AI designed to provide personalized nutrition advice and support. I'm constantly learning and improving to better serve your dietary needs.</p>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+const messages = [
+    'Calculate my BMI and body fat percentage.',
+    'How many calories do I need per day?',
+    'Recommend a balanced meal plan.',
+    'Can you suggest low-carb recipes?',
+    'What are good sources of protein?',
+    'How can I improve my workout routine?',
+    'What foods should I avoid?',
+    'What are the benefits of drinking water?',
+    'Can you explain macronutrients?',
+    'Suggest snacks for energy boost.'
+];
+
+        function getRandomMessages(num) {
+            const shuffled = messages.sort(() => 0.5 - Math.random());
+            return shuffled.slice(0, num);
+        }
+
+        function displayRandomPresetButtons() {
+            const presetButtonsDiv = document.getElementById('preset-buttons');
+            presetButtonsDiv.innerHTML = ''; // Clear existing buttons
+            const randomMessages = getRandomMessages(3);
+            randomMessages.forEach(message => {
+                const button = document.createElement('button');
+                button.type = 'button';
+                button.textContent = message;
+                button.onclick = () => setPresetMessage(message);
+                presetButtonsDiv.appendChild(button);
+            });
+        }
+
+            function setPresetMessage(message) {
+                const userInput = document.getElementById('user_input');
+                if (userInput.value.trim() !== "") {
+                    userInput.value += ' ' + message;
+                } else {
+                    userInput.value = message;
+                }
+                userInput.focus();
+                togglePresetButtons();
+            }
+
+        function togglePresetButtons() {
+            const userInput = document.getElementById('user_input');
+            const presetButtons = document.getElementById('preset-buttons');
+            if (userInput.value.trim() === "") {
+                presetButtons.style.display = "block";
+                displayRandomPresetButtons();
+            } else {
+                presetButtons.style.display = "none";
+            }
+        }
+
+        document.getElementById('user_input').addEventListener('input', togglePresetButtons);
+
+        $(document).ready(function() {
+            // Function to scroll chat box to the bottom
+            function scrollToBottom() {
+                var chatBox = $('#chat-box');
+                chatBox.scrollTop(chatBox.prop("scrollHeight"));
+            }
+
+            // Initial call to display buttons
+            displayRandomPresetButtons();
+    
+            // Scroll to bottom when document is ready
+            scrollToBottom();
+    
+            // Handle new messages
+            $('#chat-form').on('submit', function(event) {
+                event.preventDefault();
+                var user_input = $('#user_input').val();
+                $('#chat-box').append('<div class="user-message message">' + user_input + '</div>');
+                $('#user_input').val('');
+                var thinkingMessage = $('<div class="ai-message message">AI is thinking...</div>');
+                $('#chat-box').append(thinkingMessage);
+                scrollToBottom(); // Scroll to bottom after adding "AI is thinking..."
+    
+                $.ajax({
+                    url: '/continue_chat',
+                    method: 'POST',
+                    data: { user_input: user_input },
+                    dataType: 'json',
+                    success: function(response) {
+                        thinkingMessage.remove();
+                        $('#chat-box').append('<div class="ai-message message">' + response.content + '</div>');
+                        scrollToBottom(); // Scroll to bottom after AI response
+                    },
+                    error: function() {
+                        thinkingMessage.remove();
+                        alert('Error occurred while processing the request.');
+                    }
+                });
+            });
+        });
+    </script>
+       <script>
+        document.querySelector('form').onsubmit = function(event) {
+            const requiredFields = document.querySelectorAll('[required]');
+            let isValid = true;
+            requiredFields.forEach(function(field) {
+                if (!field.value.trim()) {
+                    isValid = false;
+                    field.style.border = '1px solid red'; // Highlight required fields
+                }
+            });
+            if (!isValid) {
+                event.preventDefault(); // Prevent form submission if any required field is empty
+            }
+        };
+    </script>
+</body>
+</html>
